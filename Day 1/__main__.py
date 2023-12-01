@@ -10,11 +10,21 @@ class Day01:
     self.process_list()
 
   def process_list(self) -> list:
+    self.convert_to_int()
     self.strip_alpha_characters()
     self.strip_middle_digits()
     self.repeat_single_digits()
     self.sum_list()
     print(self.sum)
+
+  def convert_to_int(self) -> list:
+    list = []
+    numbers = {"one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six": "6", "seven": "7", "eight": "8", "nine": "9"}
+    for line in self.list:
+        for key, value in numbers.items():
+            line = line.replace(key, key + value + key)
+        list.append(line)
+    self.list = list
 
   def strip_alpha_characters(self) -> list:
     list = []
