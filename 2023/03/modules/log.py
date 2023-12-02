@@ -6,9 +6,9 @@ from rich.logging import RichHandler
 class Logger:
   def __init__(self) -> None:
     self.config = Config()
-    self.log = self.setup_logging()
+    self.log = self.setup_log()
 
-  def setup_logging(self) -> None:
+  def setup_log(self) -> None:
     logging.basicConfig(
       level=self.config.logging.level,
       format=self.config.logging.format,
