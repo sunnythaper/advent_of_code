@@ -20,4 +20,4 @@ class Logger:
         )
       ],
     )
-    return logging.getLogger("rich")
+    return logging.getLogger(self.config.logging.handler)
