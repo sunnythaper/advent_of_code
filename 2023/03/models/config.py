@@ -9,5 +9,3 @@ class Logging(BaseModel):
 
 class Config(BaseModel):
     logging: Logging = Logging()
-
-config = Config()
