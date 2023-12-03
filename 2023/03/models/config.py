@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, FilePath
 
 class Logging(BaseModel):
     level: str = 'INFO'
@@ -8,5 +8,10 @@ class Logging(BaseModel):
     rich_tracebacks: bool = True
     show_locals: bool = True
 
+class Schematic(BaseModel):
+    # file: FilePath = 'data/test_list.txt'
+    file: FilePath = 'data/list.txt'
+
 class Config(BaseModel):
     logging: Logging = Logging()
+    schematic: Schematic = Schematic()
