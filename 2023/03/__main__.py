@@ -1,7 +1,7 @@
 import re
 
 from models.config import Config
-from models.engine import Engine, Gear, Part
+from models.engine import Engine, Gear, Part, Schematic
 from modules.log import Logger
 from rich import print
 
@@ -14,11 +14,13 @@ class Day3:
   def process_engine_schematic(self) -> Engine:
     try:
       with open(self.config.schematic.file, "r") as schematic:
-        self.schematic = schematic.read()
-      self.engine = Engine(
-        gears = self.get_gears(),
-        parts = self.get_parts(),
-      )
+        self.engine = Engine(
+          schematic = Schematic(
+            diagram = schematic.read(),
+          )
+        )
+      self.get_gears()
+      self.get_parts()
       self.sum_parts()
       print(self.engine)
       return self.engine
@@ -27,38 +29,36 @@ class Day3:
 
   def get_gears(self) -> list[Gear]:
     try:
-      gears = []
-      for i, match in enumerate(re.finditer(r'\*', self.schematic), start=1):
+      for i, match in enumerate(re.finditer(r'\*', self.engine.schematic.diagram), start=1):
         gear = Gear(
           id = i,
-          line = self.schematic.count('\n', 0, match.start()) + 1,
-          start_column = match.start() - self.schematic.rfind('\n', 0, match.start()),
-          end_column = match.end() - self.schematic.rfind('\n', 0, match.end()),
+          line = self.engine.schematic.diagram.count('\n', 0, match.start()) + 1,
+          start_column = match.start() - self.engine.schematic.diagram.rfind('\n', 0, match.start()),
+          end_column = match.end() - self.engine.schematic.diagram.rfind('\n', 0, match.end()),
         )
-        gears.append(gear)
-      return gears
+        self.engine.gears.append(gear)
+      return self.engine.gears
     except Exception as e:
       self.logger.log.exception(e)
 
   def get_parts(self) -> list[Part]:
     try:
-      parts = []
-      for match in re.finditer(r'\d+', self.schematic):
+      for match in re.finditer(r'\d+', self.engine.schematic.diagram):
         part = Part(
           number = match.group(),
-          line = self.schematic.count('\n', 0, match.start()) + 1,
-          start_column = match.start() - self.schematic.rfind('\n', 0, match.start()),
-          end_column = match.end() - self.schematic.rfind('\n', 0, match.end()),
+          line = self.engine.schematic.diagram.count('\n', 0, match.start()) + 1,
+          start_column = match.start() - self.engine.schematic.diagram.rfind('\n', 0, match.start()),
+          end_column = match.end() - self.engine.schematic.diagram.rfind('\n', 0, match.end()),
         )
         if self.check_valid_part(part):
-          parts.append(part)
-      return parts
+          self.engine.parts.append(part)
+      return self.engine.parts
     except Exception as e:
       self.logger.log.exception(e)
 
   def check_valid_part(self, part: Part) -> bool:
     try:
-      lines = self.schematic.split('\n')
+      lines = self.engine.schematic.diagram.split('\n')
       start_line = max(0, part.line - 1)
       end_line = min(len(lines), part.line + 2)
       return any(self.check_for_symbol(part, lines[line_number - 1]) for line_number in range(start_line, end_line))
