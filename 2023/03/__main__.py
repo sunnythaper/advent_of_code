@@ -80,15 +80,15 @@ class Day3:
     try:
       start_column = max(0, part.start_column - 2)
       gears = re.finditer(r'[\*]', line[start_column:part.end_column])
-      for _ in gears:
-        part.gear_id = self.get_gear_id(line_number, start_column_number, part.end_column + 1)
+      for gear in gears:
+        part.gear_ids.append(self.get_gear_id(gear, line_number, start_column_number))
     except Exception as e:
       self.logger.log.exception(e)
 
-  def get_gear_id(self, line_number: int, start_column_number: int, end_column_number: int) -> int:
+  def get_gear_id(self, gear: any, line_number: int, start_column_number: int) -> int:
     try:
       for known_gear in self.engine.gears:
-        if known_gear.line == line_number and known_gear.start_column in range(start_column_number, end_column_number):
+        if known_gear.line == line_number and known_gear.start_column is start_column_number + gear.start() + 1:
           return known_gear.id
     except Exception as e:
       self.logger.log.exception(e)
@@ -104,7 +104,7 @@ class Day3:
   def sum_gears(self) -> int:
     try:
       for gear in self.engine.gears:
-        parts = [part for part in self.engine.parts if gear.id is part.gear_id]
+        parts = [part for part in self.engine.parts if gear.id in part.gear_ids]
         if len(parts) == 2:
           gear.ratio = 1
           for part in parts:

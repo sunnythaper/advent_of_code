@@ -12,7 +12,7 @@ class Part(BaseModel):
     line: int
     start_column: int
     end_column: int
-    gear_id: int | None = None
+    gear_ids: list[int] = []
 
 class Schematic(BaseModel):
     diagram: str
