@@ -4,7 +4,6 @@ from models.config import Config
 from models.engine import Engine, Part
 from modules.log import Logger
 from rich import print
-import re
 
 class Day3:
   def __init__(self) -> None:
