@@ -68,7 +68,7 @@ class Day3:
   def check_for_symbol(self, part: Part, line: str) -> bool:
     try:
       start_column = max(0, part.start_column - 2)
-      return re.search(r'[^.\d]', line[start_column:part.end_column])
+      return bool(re.search(r'[^.\d]', line[start_column:part.end_column]))
     except Exception as e:
       self.logger.log.exception(e)
 
