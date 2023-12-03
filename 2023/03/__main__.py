@@ -32,7 +32,8 @@ class Day3:
         gear = Gear(
           id = i,
           line = self.schematic.count('\n', 0, match.start()) + 1,
-          column = match.start() - self.schematic.rfind('\n', 0, match.start()),
+          start_column = match.start() - self.schematic.rfind('\n', 0, match.start()),
+          end_column = match.end() - self.schematic.rfind('\n', 0, match.end()),
         )
         gears.append(gear)
       return gears

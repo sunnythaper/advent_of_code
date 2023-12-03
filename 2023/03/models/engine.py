@@ -5,11 +5,13 @@ class Part(BaseModel):
     line: int
     start_column: int
     end_column: int
+    gear_ids: list[int] = []
 
 class Gear(BaseModel):
     id: int
     line: int
-    column: int
+    start_column: int
+    end_column: int
     ratio: int = 0
 
 class Engine(BaseModel):
