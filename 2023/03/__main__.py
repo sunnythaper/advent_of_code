@@ -22,6 +22,7 @@ class Day3:
       self.get_gears()
       self.get_parts()
       self.sum_parts()
+      self.sum_gears()
       print(self.engine)
       return self.engine
     except Exception as e:
@@ -79,8 +80,8 @@ class Day3:
     try:
       start_column = max(0, part.start_column - 2)
       gears = re.finditer(r'[\*]', line[start_column:part.end_column])
-      for gear in gears:
-        part.gear_ids.append(self.get_gear_id(line_number, start_column_number, part.end_column + 1))
+      for _ in gears:
+        part.gear_id = self.get_gear_id(line_number, start_column_number, part.end_column + 1)
     except Exception as e:
       self.logger.log.exception(e)
 
@@ -97,6 +98,14 @@ class Day3:
       for part in self.engine.parts:
         self.engine.sum += int(part.number)
       return self.engine.sum
+    except Exception as e:
+      self.logger.log.exception(e)
+
+  def sum_gears(self) -> int:
+    try:
+      for gear in self.engine.gears:
+        parts = [part for part in self.engine.parts if gear.id is part.gear_id]
+        print(parts)
     except Exception as e:
       self.logger.log.exception(e)
 
