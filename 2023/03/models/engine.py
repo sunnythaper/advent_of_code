@@ -17,9 +17,12 @@ class Part(BaseModel):
 class Schematic(BaseModel):
     diagram: str
 
+class Sum(BaseModel):
+    parts: int = 0
+    gears: int = 0
+
 class Engine(BaseModel):
+    schematic: Schematic
     gears: list[Gear] = []
     parts: list[Part] = []
-    schematic: Schematic
-    sum: int = 0
-    ratio: int = 0
+    sum: Sum = Sum()

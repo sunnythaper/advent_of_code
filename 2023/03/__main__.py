@@ -96,8 +96,8 @@ class Day3:
   def sum_parts(self) -> int:
     try:
       for part in self.engine.parts:
-        self.engine.sum += int(part.number)
-      return self.engine.sum
+        self.engine.sum.parts += int(part.number)
+      return self.engine.sum.parts
     except Exception as e:
       self.logger.log.exception(e)
 
@@ -109,8 +109,8 @@ class Day3:
           gear.ratio = 1
           for part in parts:
             gear.ratio *= part.number
-        self.engine.ratio += gear.ratio
-      return self.engine.ratio
+        self.engine.sum.gears += gear.ratio
+      return self.engine.sum.gears
     except Exception as e:
       self.logger.log.exception(e)
 
