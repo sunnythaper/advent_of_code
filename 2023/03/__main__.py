@@ -105,7 +105,7 @@ class Day3:
     try:
       for gear in self.engine.gears:
         parts = [part for part in self.engine.parts if gear.id is part.gear_id]
-        if len(parts) > 1:
+        if len(parts) == 2:
           gear.ratio = 1
           for part in parts:
             gear.ratio *= part.number

@@ -9,8 +9,8 @@ class Logging(BaseModel):
     show_locals: bool = True
 
 class Schematic(BaseModel):
-    # file: FilePath = 'data/test_list.txt'
-    file: FilePath = 'data/list.txt'
+    file: FilePath = 'data/test_list.txt'
+    # file: FilePath = 'data/list.txt'
 
 class Config(BaseModel):
     logging: Logging = Logging()
