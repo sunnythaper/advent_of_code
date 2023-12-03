@@ -40,7 +40,8 @@ class Day3:
 
   def check_valid_part(self, part: Part) -> bool:
     try:
-      current_line = self.schematic.split('\n')[part.line - 1]
+      lines = self.schematic.split('\n')
+      current_line = lines[part.line - 1]
 
       if part.column == 1 and re.search(r'[^.\d]', current_line[part.column - 1:part.column + len(str(part.number))]):
         return True
@@ -49,7 +50,7 @@ class Day3:
         return True
 
       if part.line > 1:
-        above_line = self.schematic.split('\n')[part.line - 2]
+        above_line = lines[part.line - 2]
 
         if part.column == 1 and re.search(r'[^.\d]', above_line[part.column - 1:part.column + len(str(part.number))]):
           return True
@@ -57,8 +58,8 @@ class Day3:
         if part.column > 1 and re.search(r'[^.\d]', above_line[part.column - 2:part.column + len(str(part.number))]):
           return True
 
-      if part.line < len(self.schematic.split('\n')):
-        below_line = self.schematic.split('\n')[part.line]
+      if part.line < len(lines):
+        below_line = lines[part.line]
 
         if part.column == 1 and re.search(r'[^.\d]', below_line[part.column - 1:part.column + len(str(part.number))]):
           return True
