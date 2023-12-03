@@ -80,9 +80,6 @@ class Day3:
       start_column = max(0, part.start_column - 2)
       gears = re.finditer(r'[\*]', line[start_column:part.end_column])
       for gear in gears:
-        print(f"Line: ", line_number)
-        print(f"Start Column: ", start_column_number)
-        print(f"End Column: ", part.end_column)
         part.gear_ids.append(self.get_gear_id(line_number, start_column_number, part.end_column + 1))
     except Exception as e:
       self.logger.log.exception(e)
