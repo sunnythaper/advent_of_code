@@ -1,7 +1,7 @@
 import re
 
 from models.config import Config
-from models.engine import Engine, Gear, Part, Schematic
+from models.engine import Engine, Gear, Part, Schematic, Sum
 from modules.log import Logger
 from rich import print
 
@@ -96,7 +96,7 @@ class Day3:
   def sum_parts(self) -> int:
     try:
       for part in self.engine.parts:
-        self.engine.sum.parts += int(part.number)
+        self.engine.sum.parts += part.number
       return self.engine.sum.parts
     except Exception as e:
       self.logger.log.exception(e)
