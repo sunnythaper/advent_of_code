@@ -22,3 +22,4 @@ class Engine(BaseModel):
     parts: list[Part] = []
     schematic: Schematic
     sum: int = 0
+    ratio: int = 0

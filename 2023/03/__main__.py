@@ -105,7 +105,12 @@ class Day3:
     try:
       for gear in self.engine.gears:
         parts = [part for part in self.engine.parts if gear.id is part.gear_id]
-        print(parts)
+        if len(parts) > 1:
+          gear.ratio = 1
+          for part in parts:
+            gear.ratio *= part.number
+        self.engine.ratio += gear.ratio
+      return self.engine.ratio
     except Exception as e:
       self.logger.log.exception(e)
 
