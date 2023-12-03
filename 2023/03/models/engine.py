@@ -3,8 +3,8 @@ from pydantic import BaseModel
 class Part(BaseModel):
     number: int
     line: int
-    column: int
-    length: int
+    start_column: int
+    end_column: int
 
 class Gear(BaseModel):
     id: int

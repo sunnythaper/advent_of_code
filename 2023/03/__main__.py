@@ -46,8 +46,8 @@ class Day3:
         part = Part(
           number = match.group(),
           line = self.schematic.count('\n', 0, match.start()) + 1,
-          column = match.start() - self.schematic.rfind('\n', 0, match.start()),
-          length = len(match.group()),
+          start_column = match.start() - self.schematic.rfind('\n', 0, match.start()),
+          end_column = match.end() - self.schematic.rfind('\n', 0, match.end()),
         )
         if self.check_valid_part(part):
           parts.append(part)
@@ -68,10 +68,10 @@ class Day3:
     try:
       pattern = r'[^.\d]'
 
-      if part.column == 1 and re.search(pattern, line[part.column - 1:part.column + part.length]):
+      if part.start_column == 1 and re.search(pattern, line[part.start_column - 1:part.end_column]):
         return True
 
-      if part.column > 1 and re.search(pattern, line[part.column - 2:part.column + part.length]):
+      if part.start_column > 1 and re.search(pattern, line[part.start_column - 2:part.end_column]):
         return True
 
       return False
