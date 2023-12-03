@@ -1,7 +1,7 @@
 import re
 
 from models.config import Config
-from models.engine import Engine, Gear, Part, Schematic, Sum
+from models.engine import Engine, Gear, Part, Schematic
 from modules.log import Logger
 from rich import print
 
