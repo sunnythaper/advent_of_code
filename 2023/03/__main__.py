@@ -70,24 +70,27 @@ class Day3:
       start_column = max(0, part.start_column - 2)
       symbols = bool(re.search(r'[^.\d]', line[start_column:part.end_column]))
       if symbols:
-        self.check_for_gears(part, line, line_number)
+        self.check_for_gears(part, line, line_number, start_column)
       return symbols
     except Exception as e:
       self.logger.log.exception(e)
 
-  def check_for_gears(self, part: Part, line: str, line_number: int) -> bool:
+  def check_for_gears(self, part: Part, line: str, line_number: int, start_column_number: int) -> None:
     try:
       start_column = max(0, part.start_column - 2)
       gears = re.finditer(r'[\*]', line[start_column:part.end_column])
       for gear in gears:
-        part.gear_ids.append(self.get_gear_id(gear, line, line_number))
+        print(f"Line: ", line_number)
+        print(f"Start Column: ", start_column_number)
+        print(f"End Column: ", part.end_column)
+        part.gear_ids.append(self.get_gear_id(line_number, start_column_number, part.end_column + 1))
     except Exception as e:
       self.logger.log.exception(e)
 
-  def get_gear_id(self, gear, line: str, line_number: int) -> int:
+  def get_gear_id(self, line_number: int, start_column_number: int, end_column_number: int) -> int:
     try:
       for known_gear in self.engine.gears:
-        if known_gear.line == line_number:
+        if known_gear.line == line_number and known_gear.start_column in range(start_column_number, end_column_number):
           return known_gear.id
     except Exception as e:
       self.logger.log.exception(e)
