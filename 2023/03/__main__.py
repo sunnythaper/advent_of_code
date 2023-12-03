@@ -29,12 +29,12 @@ class Day3:
 
   def get_gears(self) -> list[Gear]:
     try:
-      for i, match in enumerate(re.finditer(r'\*', self.engine.schematic.diagram), start=1):
+      for i, gear in enumerate(re.finditer(r'\*', self.engine.schematic.diagram), start=1):
         gear = Gear(
           id = i,
-          line = self.engine.schematic.diagram.count('\n', 0, match.start()) + 1,
-          start_column = match.start() - self.engine.schematic.diagram.rfind('\n', 0, match.start()),
-          end_column = match.end() - self.engine.schematic.diagram.rfind('\n', 0, match.end()),
+          line = self.engine.schematic.diagram.count('\n', 0, gear.start()) + 1,
+          start_column = gear.start() - self.engine.schematic.diagram.rfind('\n', 0, gear.start()),
+          end_column = gear.end() - self.engine.schematic.diagram.rfind('\n', 0, gear.end()),
         )
         self.engine.gears.append(gear)
       return self.engine.gears
@@ -43,12 +43,12 @@ class Day3:
 
   def get_parts(self) -> list[Part]:
     try:
-      for match in re.finditer(r'\d+', self.engine.schematic.diagram):
+      for part in re.finditer(r'\d+', self.engine.schematic.diagram):
         part = Part(
-          number = match.group(),
-          line = self.engine.schematic.diagram.count('\n', 0, match.start()) + 1,
-          start_column = match.start() - self.engine.schematic.diagram.rfind('\n', 0, match.start()),
-          end_column = match.end() - self.engine.schematic.diagram.rfind('\n', 0, match.end()),
+          number = part.group(),
+          line = self.engine.schematic.diagram.count('\n', 0, part.start()) + 1,
+          start_column = part.start() - self.engine.schematic.diagram.rfind('\n', 0, part.start()),
+          end_column = part.end() - self.engine.schematic.diagram.rfind('\n', 0, part.end()),
         )
         if self.check_valid_part(part):
           self.engine.parts.append(part)
