@@ -1,7 +1,7 @@
 import re
 
 from models.config import Config
-from models.engine import Engine, Part
+from models.engine import Engine, Gear, Part
 from modules.log import Logger
 from rich import print
 
@@ -15,11 +15,27 @@ class Day3:
     try:
       with open(self.config.schematic.file, "r") as schematic:
         self.schematic = schematic.read()
-        parts = self.get_parts()
-        self.engine = Engine(parts=parts)
-        self.sum_parts()
-        print(self.engine)
-        return self.engine
+      self.engine = Engine(
+        gears = self.get_gears(),
+        parts = self.get_parts(),
+      )
+      self.sum_parts()
+      print(self.engine)
+      return self.engine
+    except Exception as e:
+      self.logger.log.exception(e)
+
+  def get_gears(self) -> list[Gear]:
+    try:
+      gears = []
+      for i, match in enumerate(re.finditer(r'\*', self.schematic), start=1):
+        gear = Gear(
+          id = i,
+          line = self.schematic.count('\n', 0, match.start()) + 1,
+          column = match.start() - self.schematic.rfind('\n', 0, match.start()),
+        )
+        gears.append(gear)
+      return gears
     except Exception as e:
       self.logger.log.exception(e)
 
@@ -27,11 +43,12 @@ class Day3:
     try:
       parts = []
       for match in re.finditer(r'\d+', self.schematic):
-        part_number = match.group()
-        line_number = self.schematic.count('\n', 0, match.start()) + 1
-        column_number = match.start() - self.schematic.rfind('\n', 0, match.start())
-        part_length = len(part_number)
-        part = Part(number=part_number, line=line_number, column=column_number, length=part_length)
+        part = Part(
+          number = match.group(),
+          line = self.schematic.count('\n', 0, match.start()) + 1,
+          column = match.start() - self.schematic.rfind('\n', 0, match.start()),
+          length = len(match.group()),
+        )
         if self.check_valid_part(part):
           parts.append(part)
       return parts
@@ -41,24 +58,9 @@ class Day3:
   def check_valid_part(self, part: Part) -> bool:
     try:
       lines = self.schematic.split('\n')
-      current_line = lines[part.line - 1]
-
-      if self.check_for_symbol(part, current_line):
-        return True
-
-      if part.line > 1:
-        above_line = lines[part.line - 2]
-
-        if self.check_for_symbol(part, above_line):
-          return True
-
-      if part.line < len(lines):
-        below_line = lines[part.line]
-
-        if self.check_for_symbol(part, below_line):
-          return True
-
-      return False
+      start_line = max(0, part.line - 1)
+      end_line = min(len(lines), part.line + 2)
+      return any(self.check_for_symbol(part, lines[line_number - 1]) for line_number in range(start_line, end_line))
     except Exception as e:
       self.logger.log.exception(e)
 

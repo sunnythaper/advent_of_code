@@ -6,6 +6,13 @@ class Part(BaseModel):
     column: int
     length: int
 
+class Gear(BaseModel):
+    id: int
+    line: int
+    column: int
+    ratio: int = 0
+
 class Engine(BaseModel):
-    parts: list[Part] | None = None
+    gears: list[Gear]
+    parts: list[Part]
     sum: int = 0
