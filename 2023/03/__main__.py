@@ -30,7 +30,7 @@ class Day3:
 
   def get_gears(self) -> list[Gear]:
     try:
-      for i, gear in enumerate(re.finditer(r'\*', self.engine.schematic.diagram), start=1):
+      for i, gear in enumerate(re.finditer(self.config.filter.gear, self.engine.schematic.diagram), start=1):
         gear = Gear(
           id = i,
           line = self.engine.schematic.diagram.count('\n', 0, gear.start()) + 1,
@@ -44,7 +44,7 @@ class Day3:
 
   def get_parts(self) -> list[Part]:
     try:
-      for part in re.finditer(r'\d+', self.engine.schematic.diagram):
+      for part in re.finditer(self.config.filter.part, self.engine.schematic.diagram):
         part = Part(
           number = part.group(),
           line = self.engine.schematic.diagram.count('\n', 0, part.start()) + 1,
@@ -69,7 +69,7 @@ class Day3:
   def check_for_symbols(self, part: Part, line: str, line_number: int) -> bool:
     try:
       start_column = max(0, part.start_column - 2)
-      symbols = bool(re.search(r'[^.\d]', line[start_column:part.end_column]))
+      symbols = bool(re.search(self.config.filter.symbol, line[start_column:part.end_column]))
       if symbols:
         self.check_for_gears(part, line, line_number, start_column)
       return symbols
@@ -79,7 +79,7 @@ class Day3:
   def check_for_gears(self, part: Part, line: str, line_number: int, start_column_number: int) -> None:
     try:
       start_column = max(0, part.start_column - 2)
-      gears = re.finditer(r'[\*]', line[start_column:part.end_column])
+      gears = re.finditer(self.config.filter.gear, line[start_column:part.end_column])
       for gear in gears:
         part.gear_ids.append(self.get_gear_id(gear, line_number, start_column_number))
     except Exception as e:

@@ -12,6 +12,12 @@ class Schematic(BaseModel):
     # file: FilePath = 'data/test_list.txt'
     file: FilePath = 'data/list.txt'
 
+class Filter(BaseModel):
+    part: str = r'\d+'
+    gear: str = r'\*'
+    symbol: str = r'[^.\d]'
+
 class Config(BaseModel):
+    filter: Filter = Filter()
     logging: Logging = Logging()
     schematic: Schematic = Schematic()
