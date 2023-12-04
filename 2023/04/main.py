@@ -34,10 +34,13 @@ class Day4:
       self.logger.log.exception(e)
 
   def sum_points(self, scratchcards: models.Scratchcards) -> int:
-    sum = 0
-    for card in scratchcards.cards:
-      sum += card.points
-    return sum
+    try:
+      sum = 0
+      for card in scratchcards.cards:
+        sum += card.points
+      return sum
+    except Exception as e:
+      self.logger.log.exception(e)
 
 if __name__ == "__main__":
     app = Day4()
