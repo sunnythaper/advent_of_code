@@ -1,21 +1,20 @@
 import re
+import models
+import modules
 
-from models.config import Config
-from models.engine import Engine, Gear, Part, Schematic
-from modules.log import Logger
 from rich import print
 
 class Day3:
   def __init__(self) -> None:
-    self.config = Config()
-    self.logger = Logger()
+    self.config = models.Config()
+    self.logger = modules.Logger()
     self.process_engine_schematic()
 
-  def process_engine_schematic(self) -> Engine:
+  def process_engine_schematic(self) -> models.Engine:
     try:
       with open(self.config.schematic.file, "r") as schematic:
-        self.engine = Engine(
-          schematic = Schematic(
+        self.engine = models.Engine(
+          schematic = models.Schematic(
             diagram = schematic.read(),
           )
         )
@@ -28,10 +27,10 @@ class Day3:
     except Exception as e:
       self.logger.log.exception(e)
 
-  def get_gears(self) -> list[Gear]:
+  def get_gears(self) -> list[models.Gear]:
     try:
       for i, gear in enumerate(re.finditer(self.config.filter.gear, self.engine.schematic.diagram), start=1):
-        gear = Gear(
+        gear = models.Gear(
           id = i,
           line = self.engine.schematic.diagram.count('\n', 0, gear.start()) + 1,
           start_column = gear.start() - self.engine.schematic.diagram.rfind('\n', 0, gear.start()),
@@ -42,10 +41,10 @@ class Day3:
     except Exception as e:
       self.logger.log.exception(e)
 
-  def get_parts(self) -> list[Part]:
+  def get_parts(self) -> list[models.Part]:
     try:
       for part in re.finditer(self.config.filter.part, self.engine.schematic.diagram):
-        part = Part(
+        part = models.Part(
           number = part.group(),
           line = self.engine.schematic.diagram.count('\n', 0, part.start()) + 1,
           start_column = part.start() - self.engine.schematic.diagram.rfind('\n', 0, part.start()),
@@ -57,7 +56,7 @@ class Day3:
     except Exception as e:
       self.logger.log.exception(e)
 
-  def check_valid_part(self, part: Part) -> bool:
+  def check_valid_part(self, part: models.Part) -> bool:
     try:
       lines = self.engine.schematic.diagram.split('\n')
       start_line = max(0, part.line - 1)
@@ -66,7 +65,7 @@ class Day3:
     except Exception as e:
       self.logger.log.exception(e)
 
-  def check_for_symbols(self, part: Part, line: str, line_number: int) -> bool:
+  def check_for_symbols(self, part: models.Part, line: str, line_number: int) -> bool:
     try:
       start_column = max(0, part.start_column - 2)
       symbols = bool(re.search(self.config.filter.symbol, line[start_column:part.end_column]))
@@ -76,7 +75,7 @@ class Day3:
     except Exception as e:
       self.logger.log.exception(e)
 
-  def check_for_gears(self, part: Part, line: str, line_number: int, start_column_number: int) -> None:
+  def check_for_gears(self, part: models.Part, line: str, line_number: int, start_column_number: int) -> None:
     try:
       start_column = max(0, part.start_column - 2)
       gears = re.finditer(self.config.filter.gear, line[start_column:part.end_column])
