@@ -9,3 +9,6 @@ def test_process_input_default() -> None:
 
 def test_process_input_alt_1() -> None:
   assert main('data/test_input.txt').process_input() == 'Test Input'
+
+def test_process_input_invalid() -> None:
+  assert main('data/invalid.txt').process_input() == None
