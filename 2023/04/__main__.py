@@ -1,11 +1,11 @@
-from models.config import Config
-from modules.log import Logger
+import models
+import modules
 from rich import print
 
 class Day4:
   def __init__(self) -> None:
-    self.config = Config()
-    self.logger = Logger()
+    self.config = models.Config()
+    self.logger = modules.Logger()
     self.process_input()
 
   def process_input(self) -> None:
