@@ -6,13 +6,13 @@ class Day4:
   def __init__(self) -> None:
     self.config = models.Config()
     self.logger = modules.Logger()
-    self.process_input()
 
-  def process_input(self) -> None:
+  def process_input(self) -> str:
     try:
       print(self.config)
+      return 'Day 4'
     except Exception as e:
       self.logger.log.exception(e)
 
 if __name__ == "__main__":
-    Day4()
+    Day4().process_input()
