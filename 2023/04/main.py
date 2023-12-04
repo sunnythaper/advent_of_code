@@ -20,4 +20,5 @@ class Day4:
       self.logger.log.exception(e)
 
 if __name__ == "__main__":
-    Day4().process_input()
+    app = Day4()
+    app.process_input()
