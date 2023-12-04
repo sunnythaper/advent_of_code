@@ -35,14 +35,27 @@ class Day4:
 
   def sum_points(self, scratchcards: models.Scratchcards) -> int:
     try:
-      sum = 0
+      total_points = 0
       for card in scratchcards.cards:
-        sum += card.points
-      return sum
+        total_points += card.points
+      return total_points
+    except Exception as e:
+      self.logger.log.exception(e)
+
+  def sum_cards(self, scratchcards: models.Scratchcards) -> int:
+    try:
+      total_cards = {}
+      for card in scratchcards.cards:
+        if card.number not in total_cards:
+          total_cards[card.number] = 1
+        for i in range(card.number + 1, card.number + card.matched_numbers + 1):
+          total_cards[i] = total_cards.get(i, 1) + total_cards[card.number]
+      return sum(total_cards.values())
     except Exception as e:
       self.logger.log.exception(e)
 
 if __name__ == "__main__":
-    app = Day4()
-    scratchcards = app.get_scratchcards()
-    print(app.sum_points(scratchcards))
+  app = Day4()
+  scratchcards = app.get_scratchcards()
+  print(app.sum_points(scratchcards))
+  print(app.sum_cards(scratchcards))
